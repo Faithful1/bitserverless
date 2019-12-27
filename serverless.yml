@@ -109,3 +109,15 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+resources:
+  Resources:
+    BitWallaTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        DisplayName: bitwalla test topic
+        TopicName: ${self:service}-${self:provider.stage}-topic
+  # Outputs:
+  #   NewOutput:
+  #     Description: "Description for the output"
+  #     Value: "Some output value"
