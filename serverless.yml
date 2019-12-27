@@ -13,8 +13,8 @@
 
 service: bitlambda
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: bitwalla
+org: faithful
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -25,6 +25,7 @@ provider:
   runtime: nodejs10.x
   stage: dev
   region: ap-southeast-1
+  org: faithful
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -58,13 +59,19 @@ provider:
 functions:
   hello:
     handler: handler.hello
-    #    The following are a few example events you can configure
-    #    NOTE: Please make sure to change your handler code to work with those events
-    #    Check the event documentation for details
     events:
       - http:
-          path: users/create
+          path: hello
           method: get
+
+  getBlocks:
+    handler: blocks.blockList
+    events:
+      - http:
+          path: blocks
+          method: get
+          cors: true
+
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
