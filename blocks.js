@@ -8,7 +8,6 @@ module.exports.blockList = async event => {
       `https://blockchain.info/blocks/?format=json`
     );
     const data = response.data;
-    console.log(data);
     return {
       statusCode: 200,
       body: JSON.stringify(
@@ -21,7 +20,6 @@ module.exports.blockList = async event => {
       )
     };
   } catch (error) {
-    console.log(error.response.data);
     return {
       statusCode: 500,
       body: JSON.stringify(
