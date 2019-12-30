@@ -1,18 +1,25 @@
 ('use strict');
 
+const snsPublisher = require('./snsPublisher');
+
 const axios = require('axios');
 
+// module for fetching block list from api
 module.exports.blockList = async event => {
   try {
     const response = await axios.get(
       `https://blockchain.info/blocks/?format=json`
     );
-    const data = response.data;
+    const blocksInfo = response.data;
+    console.log('start publishing');
+
+    snsPublisher.snsPublisher();
+
     return {
       statusCode: 200,
       body: JSON.stringify(
         {
-          message: data,
+          message: blocksInfo,
           input: event
         },
         null,
@@ -26,9 +33,24 @@ module.exports.blockList = async event => {
         {
           message: error.response.data
         },
-        null,
-        2
+        null
       )
     };
   }
+};
+
+// lambda triggered after fetching bloglist and publishing to Topic
+module.exports.snsLambdaTriggered = (event, context, callback) => {
+  var topic = event.Records[0].Sns.TopicArn;
+  var message = event.Records[0].Sns.Message;
+  console.log(event);
+  console.log(topic + '  ' + message);
+  callback(null, {
+    message:
+      'SNS lamdba was triggered from the topic ' +
+      topic +
+      ' with message ' +
+      message,
+    event
+  });
 };
