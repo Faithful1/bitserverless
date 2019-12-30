@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const SNS = new AWS.SNS();
+const config = require('./config.js');
 
 function snsPublisher() {
   console.log('Starting function');
@@ -7,7 +8,7 @@ function snsPublisher() {
   SNS.publish(
     {
       Message: 'blocks list have been updated',
-      TopicArn: 'arn:aws:sns:ap-southeast-1:729181142258:bitlambda-dev-SNSTopic'
+      TopicArn: `arn:aws:sns:${config.awsRegion}:${config.awsAccountId}:${config.topicName}`
     },
     function(err, data) {
       if (err) {
