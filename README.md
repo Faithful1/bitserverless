@@ -16,8 +16,9 @@ Ensure these are installed before going further:
 
 ### 0. setup
 
+- Navigate to root folder `dev/services`
 - create config.js file and populate appropriately using the configsample.js file
-- run npm install in root folder to install dependencies
+- run `npm install` in root folder to install dependencies
 
 ### 1. run
 
