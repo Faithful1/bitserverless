@@ -24,5 +24,5 @@ Ensure these are installed before going further:
 
 ### 1. run
 
-- build the application by running `ansible all -a "sls deploy" -i inventory` (print status)
+- build the application by running `ansible all -a "sls deploy" -i inventory`
 - To remove installed serverless application, run `ansible all -a "sls remove --stage dev" -i inventory`
