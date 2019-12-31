@@ -1,0 +1,5 @@
+- name: deploy serverless functions
+  serverless:
+    service_path: { 'inventory' }
+    state: present
+    region: ap-southeast-1

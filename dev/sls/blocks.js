@@ -54,3 +54,22 @@ module.exports.snsLambdaTriggered = (event, context, callback) => {
     event
   });
 };
+
+// Using callbacks
+// module.exports.blockList = async (event, context, cb) => {
+//   const blocksArray = await axios.get(
+//     `https://blockchain.info/blocks/?format=json`
+//   );
+//   const blocksInfo = blocksArray.data;
+
+//   console.log('start publishing');
+
+//   snsPublisher.snsPublisher();
+
+//   const response = {
+//     statusCode: 200,
+//     body: JSON.stringify({ message: blocksInfo })
+//   };
+
+//   cb(null, response);
+// };

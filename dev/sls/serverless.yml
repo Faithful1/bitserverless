@@ -17,7 +17,7 @@ provider:
       Resource: arn:aws:sns:ap-southeast-1:729181142258:bitlambda-dev-SNSTopic
 
 custom:
-  snsTopic: "${self:service}-${self:provider.stage}-SNSTopic"
+  snsTopic: '${self:service}-${self:provider.stage}-SNSTopic'
 
 # functions
 
