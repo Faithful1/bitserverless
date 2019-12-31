@@ -2,103 +2,9 @@
 
 ### **Introduction**
 
-Backend API to take in data from IoT devices and serve it to clients via REST endpoints.
-Devices need to be registered before they can send data to API.
+Backend API to take in data from REST endpoint using serverless framework and Ansible
 
-**API has been updated to accept only HTTPS requests.**
-
-### **REST API**
-
-REST API documentation can be found [here](https://documenter.getpostman.com/collection/view/1909663-fbb9d248-decd-d62c-608d-ba5714087222)
-
-### **Socket.io**
-
-Connection to socket.io is done at [https://www.terasyshub.io/](https://www.terasyshub.io/)
-
-#### Listen Events
-
-To obtain data from socket.io, you must set it to listen to the type of data you want returned. In this case either `temperature` or `humidity` as these are the only ones we have implemented so far.
-
-To get get data from the API, there are two methods:
-
-#### Polling at intervals
-
-Using this method, it is possible to manually set an interval in the frontend at which to poll the API for data.
-To do so, emit the event `getData` to socket.io. The data to provide is as follows:
-
-```JSON
-{
-  "mac" : "00:0a:95:9d:68:16",
-  "type" : "temperature",
-  "last" : 1487868693,
-  "token" : {{authtoken}}
-}
-```
-
-`mac` is the mac address of the device to get data for
-
-`type` is the type of data to be returned
-
-`last` optional field. Determines up to what time to pull results from. Leave blank to return latest datapoint.
-
-Data is returned as it would be from the REST endpoint.
-
-#### Registering to database updates
-
-This method returns data to the `temperature` and `humdity` events as soon as data is saved in the database.
-
-To be updated whenever data for a device is saved in the DB, simply send the mac address of the device to the `register` listener like so:
-
-```JS
-socket.emit('register', {device:'00:0a:95:9d:68:16', token:'{{authtoken}}'});
-```
-
-To stop listening for updates for a device, simply `unregister` from the device:
-
-```JS
-socket.emit('unregister', '00:0a:95:9d:68:16');
-```
-
-## Webhook Api documentation
-
-#### There are four endpoints that recieves a post request in this sprint namely:
-
-- **/api/webhook-obd2**: this endpoint recieves a **post** request from the webhook and persist the data in a mongo db there after sending a response status of **200** back to the webhook
-
-- **/api/events/message**: this is the endpoint to retrieves all messages events (from most recent to oldest) relating to a particular account's asset and returns an array of message events along with pagination meta data.
-  the endpoint recieves 4 input posts.
-
-  (1) **AccountName (compulsory)**: this is the name of the account as registered by the webhook services provider in which it message events is required.
-
-  (2) **limit(optional)**: the number of most recent events required.
-
-  (3) **offset(optional)**: the number of data to skip when querying.
-
-  (4) **asset(compulsory)**: serial number of the asset which event is required
-
-- **/api/events/track**: this is the endpoint to retrieves all track events (from most recent to oldest) relating to a particular account's asset and returns an array of presence events along with pagination meta data.
-  the endpoint recieves 4 input posts.
-
-  (1) **AccountName (compulsory)**: this is the name of the account as registered by the webhook services provider in which it track events is required.
-
-  (2) **limit(optional)**: the number of most recent events required.
-
-  (3) **offset(optional)**: the number of data to skip when querying.
-
-  (4) **asset(compulsory)**: serial number of the asset which event is required
-
-- **/api/events/presence**: this is the endpoint to retrieves all presence events (from most recent to oldest) relating to a particular account's asset and returns an array of presence events along with pagination meta data.
-  the endpoint recieves 4 input posts.
-
-  (1) **AccountName (compulsory)**: this is the name of the account as registered by the webhook services provider in which it track events is required.
-
-  (2) **limit(optional)**: the number of most recent events required.
-
-  (3) **offset(optional)**: the number of data to skip when querying.
-
-  (4) **asset(compulsory)**: serial number of the asset which event is required
-
-## Run the API as a docker container
+## Run the sls app as a docker container
 
 A docker stack for production env
 
@@ -106,10 +12,11 @@ A docker stack for production env
 
 Ensure these are installed before going further:
 
-- docker@\^18.05.0-ce
-- docker-compose@^1.21.2
+- install serverless framework https://serverless.com/framework/docs/getting-started/
+- install npm: https://nodejs.org/en/download/
+- install Ansible: https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 
-## production
+## development
 
 ### 0. setup
 
@@ -117,15 +24,5 @@ Ensure these are installed before going further:
 
 ### 1. run
 
-- `docker-compose up -d`
-  You can begin editing code on your host machine, changes will be detected and all relevant processes restarted or live-reloaded inside their containers.
-
-### 2. inspect
-
-- `docker-compose ps` (print status)
-- `docker-compose logs service-name(e.g api or mongo)` (attaches to logs of one or more services)
-
-### 3. run
-
-go to your /etc/hosts and map your ip to api.terasys.com
-`127.0.0.1 app.terasys.com` to view it on your browser.
+- build the application by running `ansible all -a "sls deploy" -i inventory` (print status)
+- To remove installed serverless application, run `ansible all -a "sls remove --stage dev" -i inventory`
