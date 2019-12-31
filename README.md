@@ -4,10 +4,6 @@
 
 Backend API to take in data from REST endpoint using serverless framework and Ansible
 
-## Run the sls app as a docker container
-
-A docker stack for production env
-
 ## dependencies
 
 Ensure these are installed before going further:
@@ -20,7 +16,8 @@ Ensure these are installed before going further:
 
 ### 0. setup
 
-    create config.js file and populate appropriately using the configsample.js file
+- create config.js file and populate appropriately using the configsample.js file
+- run npm install in root folder to install dependencies
 
 ### 1. run
 
