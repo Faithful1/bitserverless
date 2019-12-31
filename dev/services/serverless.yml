@@ -1,0 +1,45 @@
+service: bitlambda
+
+app: bitwalla
+org: faithful
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: dev
+  region: ap-southeast-1
+  # uncomment org variable if you are using sls dashboard
+  # org: faithful
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - SNS:Publish
+      Resource: arn:aws:sns:ap-southeast-1:729181142258:bitlambda-dev-SNSTopic
+
+custom:
+  snsTopic: '${self:service}-${self:provider.stage}-SNSTopic'
+  stage: '${opt:stage, self:provider.stage}'
+
+# functions
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+
+  getBlocks:
+    handler: blocks.blockList
+    events:
+      - http:
+          path: blocks
+          method: get
+          cors: true
+
+  snsLambdaTriggered:
+    handler: blocks.snsLambdaTriggered
+    events:
+      - sns: ${self:custom.snsTopic}
