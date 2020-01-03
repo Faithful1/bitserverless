@@ -3,6 +3,9 @@ service: bitlambda
 app: bitwalla
 org: faithful
 
+plugins:
+  - serverless-pseudo-parameters
+
 provider:
   name: aws
   runtime: nodejs10.x
@@ -15,7 +18,8 @@ provider:
     - Effect: Allow
       Action:
         - SNS:Publish
-      Resource: arn:aws:sns:ap-southeast-1:729181142258:bitlambda-dev-SNSTopic
+      Resource:
+        - arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:bitlambda-dev-SNSTopic
 
 custom:
   snsTopic: '${self:service}-${self:provider.stage}-SNSTopic'
