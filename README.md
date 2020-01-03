@@ -22,5 +22,14 @@ Ensure these are installed before going further:
 
 ### 1. run
 
+#### to run using ansible
+
+- make sure you are in the root folder `dev/services`
 - build the application by running `ansible all -a "sls deploy" -i inventory`
 - To remove installed serverless application, run `ansible all -a "sls remove --stage dev" -i inventory`
+
+#### to run using serverless commands
+
+- make sure you are in the root folder `dev/services`
+- build the application by running `sls deploy`
+- To remove installed serverless application, run `sls remove --stage dev`
