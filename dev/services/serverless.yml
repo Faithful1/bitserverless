@@ -1,7 +1,6 @@
 service: bitlambda
 
 app: bitwalla
-org: faithful
 
 plugins:
   - serverless-pseudo-parameters
@@ -11,7 +10,7 @@ provider:
   runtime: nodejs10.x
   stage: dev
   region: ap-southeast-1
-  # uncomment org variable if you are using sls dashboard
+  # uncomment org variable if you are using sls dashboard and change it to yours
   # org: faithful
 
   iamRoleStatements:
